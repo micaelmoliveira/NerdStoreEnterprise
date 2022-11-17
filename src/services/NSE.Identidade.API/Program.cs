@@ -9,68 +9,22 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var appSettingsSection = builder.Configuration.GetSection("AppSettings");
-builder.Services.Configure<AppSettings>(appSettingsSection);
-
-var appSettings = appSettingsSection.Get<AppSettings>();
-var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(beaderOptions =>
-{
-    beaderOptions.RequireHttpsMetadata = true;
-    beaderOptions.SaveToken = true;
-    beaderOptions.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey= true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer= true,
-        ValidateAudience= true,
-        ValidAudience = appSettings.ValidoEm,
-        ValidIssuer= appSettings.Emissor,
-    };
-});
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title= "NerdStore Enterprise Identity API",
-        Description= "Esta é uma API para estudo",
-        Contact = new OpenApiContact() { Name = "Micael Oliveira", Email = "micaelm.oliveira@outlook.com"},
-        License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
-    });
-});
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDefaultIdentity<IdentityUser>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddApiConfiguration();
+builder.Services.AddIdentityConfiguration(builder.Configuration);
+builder.Services.AddSwaggerConfiguration();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
+builder.Configuration
+    .SetBasePath(app.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{app.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    });
-}
+app.UseApiConfiguration(app.Environment);
+app.UseSwaggerConfiguration(app.Environment);
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace NSE.WebApp.MVC.Controllers
 {
-    public class IdentidadeController : Controller
+    public class IdentidadeController : MainController
     {
         private readonly IAutenticacaoService _autenticacaoService;
 
@@ -28,13 +28,13 @@ namespace NSE.WebApp.MVC.Controllers
         [Route("nova-conta")]
         public async Task<IActionResult> Registro(UsuarioRegistro usuarioRegistro)
         {
-            if (ModelState.IsValid) return View(usuarioRegistro);
+            if (!ModelState.IsValid) return View(usuarioRegistro);
 
             var response = await _autenticacaoService.Registro(usuarioRegistro);
 
-            //if (false) return View(usuarioRegistro);
-            await RealizarLogin(response);
+            if (ResponsePossuiErros(response.ResponseResult)) return View(usuarioRegistro);
 
+            await RealizarLogin(response);
 
             return RedirectToAction("Index", "Home");
         }
@@ -54,7 +54,8 @@ namespace NSE.WebApp.MVC.Controllers
 
             var response = await _autenticacaoService.Login(usuarioLogin);
 
-            //if (false) return View(usuarioLogin);
+            if (ResponsePossuiErros(response.ResponseResult)) return View(usuarioLogin);
+
             await RealizarLogin(response);
 
             return RedirectToAction("Index", "Home");
@@ -64,6 +65,7 @@ namespace NSE.WebApp.MVC.Controllers
         [Route("sair")]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
 
         }

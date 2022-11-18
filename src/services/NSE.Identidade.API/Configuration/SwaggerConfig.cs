@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace NSE.Identidade.API.Extensions
+namespace NSE.Identidade.API.Configuration
 {
     public static class SwaggerConfig
     {
@@ -8,9 +8,9 @@ namespace NSE.Identidade.API.Extensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "NerdStore Enterprise Identity API",
+                    Title = "NerdStore Enterprise - API Identidade",
                     Description = "Esta é uma API para estudo",
                     Contact = new OpenApiContact() { Name = "Micael Oliveira", Email = "micaelm.oliveira@outlook.com" },
                     License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }

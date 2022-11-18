@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Data;
+using NSE.Identidade.API.Extensions;
 using System.Text;
 
-namespace NSE.Identidade.API.Extensions
+namespace NSE.Identidade.API.Configuration
 {
     public static class IdentityConfig
     {

@@ -1,4 +1,4 @@
-﻿namespace NSE.Identidade.API.Extensions
+﻿namespace NSE.Identidade.API.Configuration
 {
     public static class ApiConfig
     {

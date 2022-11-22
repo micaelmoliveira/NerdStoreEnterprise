@@ -24,16 +24,16 @@
                                 </a>
                                 <figcaption class="info-wrap">
                                     <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="title">
-                                        <b> @produto.Nome</b>
+                                        <b>@produto.Nome</b>
                                     </a>
 
                                     <small class="card-text">
-                                        @produto.QuantidadeEstoque<br/><br/>
+                                        @this.MensagemEstoque(produto.QuantidadeEstoque)<br/><br/>
                                         @produto.Descricao
                                     </small>
                                 </figcaption>
                                 <div class="card-footer price mt-1">
-                                    <h3>@produto.Valor</h3>
+                                    <h3>@this.FormatoMoeda(produto.Valor)</h3>
                                 </div>
                             </div>
                         </div>

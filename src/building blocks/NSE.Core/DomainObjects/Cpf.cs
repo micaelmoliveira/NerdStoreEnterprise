@@ -49,32 +49,32 @@ namespace NSE.Core.DomainObjects
 
         private static int PrimeiroDigitoVerificador(int[] cpf)
         {
-            int[] sequencia = { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var primeiroDigitoVerificador = calculoDigitoVerificador(sequencia, cpf);
+            int[] primeiraSequencia = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            var primeiroDigitoVerificador = calculoDigitoVerificador(primeiraSequencia, cpf);
 
             return primeiroDigitoVerificador;
         }
 
         private static int SegundoDigitoVerificador(int[] cpf)
         {
-            int[] sequencia = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            var primeiroDigitoVerificador = calculoDigitoVerificador(sequencia, cpf);
+            int[] segundaSequencia = { 11,10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            var primeiroDigitoVerificador = calculoDigitoVerificador(segundaSequencia, cpf);
 
             return primeiroDigitoVerificador;
         }
 
-        private static int calculoDigitoVerificador(int[] sequencia, int[] cpf)
+        private static int calculoDigitoVerificador(int[] sequenciaCalculo, int[] cpf)
         {
             var digitoVerificador = 0;
 
-            for (var i = 0; i <= sequencia.Length; i++)
+            for (var i = 0; i < sequenciaCalculo.Length; i++)
             {
-                digitoVerificador += cpf[i] * sequencia[i];
+                digitoVerificador += cpf[i] * sequenciaCalculo[i];
             }
 
-            var resto = (int)digitoVerificador % 11;
+            var resto = digitoVerificador % 11;
 
-            if (digitoVerificador < 2)
+            if (resto < 2)
             {
                 digitoVerificador = 0;
             }

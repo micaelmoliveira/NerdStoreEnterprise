@@ -3,8 +3,12 @@ using NSE.Identidade.API.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiConfiguration();
+
 builder.Services.AddIdentityConfiguration(builder.Configuration);
+
 builder.Services.AddSwaggerConfiguration();
+
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
 var app = builder.Build();
 

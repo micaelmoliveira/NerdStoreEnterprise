@@ -10,6 +10,8 @@ builder.Services.AddJwtConfiguration(builder.Configuration);
 
 builder.Services.RegisterServices();
 
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
+
 builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSwaggerConfiguration();
